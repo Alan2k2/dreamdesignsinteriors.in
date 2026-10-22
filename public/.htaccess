@@ -1,0 +1,22 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Disable directory listing
+  Options -Indexes
+
+  # Serve existing files and directories directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # If the URL exactly matches an HTML file, serve it (e.g., /about -> /about.html)
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.*)$ $1.html [L]
+
+  # Fallback to index.html for any other dynamic routes
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Handle 404 errors with the custom Next.js 404 page
+ErrorDocument 404 /404.html
